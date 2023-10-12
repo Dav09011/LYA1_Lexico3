@@ -17,7 +17,7 @@ namespace LYA1_Lexico3
         int[,] TRAND =
         {
         //  WS, L,  D,  .,  E,  +,  -,  =,  ;,  &,  |,  !,  >,  <,  *,  /,  %,  ?,  ",  {,  },  La, EOF, EOL
-            {0, 1,  2,  3,  1,  19, 20, 8, 10, 11, 12, 13, 16, 17, 22, 28, 22,  24, 25, 32, 33, 34, F,  F}, // 0
+            {0, 1,  2,  3,  1,  19, 20, 8, 10, 11, 12, 13, 16, 17, 22, 28, 22,  24, 25, 32, 33, 34, F,  0}, // 0
             {F, 1,  1,  F,  1,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F}, // 1
             {F, F,  2,  3,  5,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F}, // 2
             {E, E,  4,  E,  E,  E,  E,  E,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F}, // 3
@@ -42,17 +42,18 @@ namespace LYA1_Lexico3
             {F, F,  F,  F,  F,  F,  F,  23, F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F}, // 22
             {F, F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F}, // 23
             {F, F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F}, // 24
-            {25,25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 26, 25, 25, 25, E,  F}, // 25
+            {25,25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 26, 25, 25, 25, E,  25}, // 25
             {F, F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F}, // 26
             {F, F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F}, // 27
             {F, F,  F,  F,  F,  F,  F,  23, F,  F,  F,  F,  F,  F, 30,  29, F,  F,  F,  F,  F,  F,  F,  F}, // 28
-            {29,29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, F,  0}, // 29
-            {30,30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 31, 30, 30, 30, 30, 30, 30, 30, E,  F}, // 30
-            {F, F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  31, 0,  F,  F,  F,  F,  F,  F,  E,  F}, // 31
+            {29,29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 0}, // 29
+            {30,30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 31, 30, 30, 30, 30, 30, 30, 30, E, 30}, // 30
+            {30,30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 31,  0, 30, 30, 30, 30, 30, 30,  E, 30}, // 31
             {F, F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  32, F,  F}, // 32
             {F, F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F}, // 33
             {F, F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F}, // 34
         //  WS, L,  D,  .,  E,  +,  -,  =,  ;,  &,  |,  !,  >,  <,  *,  /,  %,  ?,  ",  {,  },  La, EOF,EOL
+        //   0, 1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,  21, 22, 23 
         };
         public Lexico()
         {
@@ -73,7 +74,11 @@ namespace LYA1_Lexico3
         }
         private int columna(char c)
         {
-            if (char.IsWhiteSpace(c))
+            if (c == '\n')
+                return 23;
+            else if(FinArchivo())
+                return 22;
+            else if(char.IsWhiteSpace(c))
                 return 0;
             else if (char.ToLower(c) == 'e')
                 return 4;
@@ -169,13 +174,23 @@ namespace LYA1_Lexico3
                     {
                         buffer += c;
                     }
+                    else
+                    {
+                        buffer = "";
+                    }
                     archivo.Read();
                 }
             }
             if (estado == E)
             {
-                log.WriteLine("Error");
-                // throw new Error("Lexico: Se espera un digito", log);
+                
+                if(getClasificacion() == Tipos.Numero){
+                    throw new Error("Lexico: Se espera un digito", log);
+                }
+                else if(getClasificacion() == Tipos.Cadena){
+                    throw new Error("Lexico: no se cerro la cadena", log);
+                }
+
             }
             setContenido(buffer);
             log.WriteLine(getContenido() + " = " + getClasificacion());
